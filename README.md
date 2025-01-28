@@ -2,7 +2,7 @@
 
 Just for giggles, I wanted to see if I could use Terraform to create and manage my docker containers and per usual, bumped into some issues when running the example code from the Hashicorp tutorial.
 
-'''HCL
+```HCL
 terraform {
   required_providers {
     docker = {
@@ -28,16 +28,16 @@ resource "docker_container" "nginx" {
     external = 8000
   }
 }
-'''
+```
 The issue was with the provider config.
 
 On macOS, access to Docker’s internal sockets (at least in my environment) is located within the Docker Desktop VM, so changing the provider to point to my home directory fixed the issue.
 
-'''HCL
+```HCL
 provider "docker" {
   host = "unix://${pathexpand("~")}/.docker/run/docker.sock"
 }
-'''
+```
 Optionally, you could use an environment variable.
 
 If you’re attempting the same for some reason, I hope this will save you some back and forth time with your favorite LLM.
